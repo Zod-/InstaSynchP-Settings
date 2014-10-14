@@ -1,0 +1,9 @@
+#loggedInAs{
+    display: flex;
+}
+#loggedInAs .click-nav{
+   margin: 0px 0px 0px 5px;
+}
+#plugin-settings ul li a img{
+	top: 7px;
+}
