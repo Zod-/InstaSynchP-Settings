@@ -3,7 +3,7 @@
 // @namespace   InstaSynchP
 // @description Provides the ability to store settings for the plugins
 
-// @version     1.0.2
+// @version     1.0.3
 // @author      Zod-
 // @source      https://github.com/Zod-/InstaSynchP-Settings
 // @license     GPL-3.0
@@ -32,11 +32,11 @@ Settings.prototype.executeOnceCore = function () {
     var th = settingsRef();
     cssLoader.add({
         'name': 'general',
-        'url': 'https://cdn.rawgit.com/Zod-/InstaSynchP-Settings/b4b071565266669398f54051ee97c9bc9391a13b/settings.css',
+        'url': 'https://cdn.rawgit.com/Zod-/InstaSynchP-Settings/7dfd1923ab7fff4ef9b201864249d2e1d2ae44ce/settings.css',
         'autoload': true
     });
     //add the button
-    $('#loggedInAs').children().first().before(
+    $('#loginfrm > :first-child').before(
         $('<div>', {
             'id': 'plugin-settings'
         }).append(
@@ -59,6 +59,7 @@ Settings.prototype.executeOnceCore = function () {
             ).addClass('js')
         ).addClass('click-nav')
     );
+    $('.friendsList').detach().appendTo('#loginfrm');
     window.settingFields = window.settingFields || undefined;
     window.gmc = new GM_configStruct({
         'id': 'GM_config',
@@ -147,4 +148,4 @@ Settings.prototype.save = function (close) {
 };
 
 window.plugins = window.plugins || {};
-window.plugins.settings = new Settings("1.0.2");
+window.plugins.settings = new Settings("1.0.3");
