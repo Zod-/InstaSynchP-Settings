@@ -3,7 +3,7 @@
 // @namespace   InstaSynchP
 // @description Provides the ability to store settings for the plugins
 
-// @version     1.0.3
+// @version     1.0.4
 // @author      Zod-
 // @source      https://github.com/Zod-/InstaSynchP-Settings
 // @license     GPL-3.0
@@ -83,10 +83,10 @@ Settings.prototype.executeOnceCore = function () {
 
                 //collapse items in sections when clicking the header
                 $('#GM_config').each(function () {
-                    $('#GM_config .section_header_holder', this.contentWindow.document || this.contentDocument).click(function () {
-                        $(this).children().filter(":not(:first-child)").slideToggle(250);
-                        if (!$(this).children().eq(0).hasClass('section_desc')) {
-                            var next = $(this).next();
+                    $('#GM_config .section_header', this.contentWindow.document || this.contentDocument).click(function () {
+                        $(this).parent().children().filter(":not(:first-child)").slideToggle(250);
+                        if (!$(this).parent().children().eq(0).hasClass('section_desc')) {
+                            var next = $(this).parent().next();
                             while (next.children().eq(0).hasClass('section_desc')) {
                                 next.slideToggle(250);
                                 next = next.next();
@@ -149,4 +149,4 @@ Settings.prototype.save = function (close) {
 };
 
 window.plugins = window.plugins || {};
-window.plugins.settings = new Settings("1.0.3");
+window.plugins.settings = new Settings("1.0.4");
