@@ -1,9 +1,20 @@
-#loggedInAs{
-    display: flex;
+#plugin-settings {
+	color: white;
+	float: left;
+	padding-top: 5px;
+	padding-right: 5px;
 }
-#loggedInAs .click-nav{
-   margin: 0px 0px 0px 5px;
+#plugin-settings ul li a img {
+    top: 7px;
 }
-#plugin-settings ul li a img{
-	top: 7px;
+#loginfrm {
+	display: flex;
+	padding-right: 185px;
+}
+.friendsList {
+	left: initial !important;
+	float: right;
+}
+#loggedInAs {
+	margin-right: 5px !important;
 }
