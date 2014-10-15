@@ -21,6 +21,7 @@
 function Settings(version) {
     "use strict";
     this.version = version;
+    this.fields = [];
 }
 
 function settingsRef() {
@@ -30,6 +31,7 @@ function settingsRef() {
 Settings.prototype.executeOnceCore = function () {
     "use strict";
     var th = settingsRef();
+    th.fields = th.fields.length === 0 ? undefined : th.fields;
     cssLoader.add({
         'name': 'general',
         'url': 'https://cdn.rawgit.com/Zod-/InstaSynchP-Settings/7dfd1923ab7fff4ef9b201864249d2e1d2ae44ce/settings.css',
@@ -60,11 +62,10 @@ Settings.prototype.executeOnceCore = function () {
         ).addClass('click-nav')
     );
     $('.friendsList').detach().appendTo('#loginfrm');
-    window.settingFields = window.settingFields || undefined;
     window.gmc = new GM_configStruct({
         'id': 'GM_config',
         'title': 'InstaSynchP Settings',
-        'fields': window.settingFields,
+        'fields': th.fields,
         'events': {
             'open': function (args) {
                 //load GM_config css
