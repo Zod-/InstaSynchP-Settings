@@ -24,13 +24,9 @@ function Settings(version) {
     this.fields = [];
 }
 
-function settingsRef() {
-    return window.plugins.settings;
-}
-
 Settings.prototype.executeOnceCore = function () {
     "use strict";
-    var th = settingsRef();
+    var th = this;
     th.fields = th.fields.length === 0 ? undefined : th.fields;
     cssLoader.add({
         'name': 'settings',
@@ -109,18 +105,19 @@ Settings.prototype.executeOnceCore = function () {
 
                 events.fire('SettingsOpen');
             },
-            'save': function (args) {
+            'save': function () {
                 events.fire('SettingsSave');
             },
-            'reset': function (args) {
+            'reset': function () {
                 events.fire('SettingsReset');
             },
-            'close': function (args) {
+            'close': function () {
                 events.fire('SettingsClose');
             },
             'change': function (args) {
+                var setting;
                 //fire an event for each setting that changed
-                for (var setting in args) {
+                for (setting in args) {
                     if (args.hasOwnProperty(setting)) {
                         events.fire('SettingChange[{0}]'.format(setting), [args[setting].old, args[setting].new]);
                     }
@@ -129,7 +126,7 @@ Settings.prototype.executeOnceCore = function () {
 
         }
     });
-    events.on('SettingsSaveInternal', function (data) {
+    events.on(th, 'SettingsSaveInternal', function (data) {
         gmc.save();
         if (data.close) {
             gmc.close();
