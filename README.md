@@ -3,6 +3,52 @@ InstaSynchP-Settings
 
 Provides the ability to store settings for the plugins
 
+Framework
+------
+Fields need to be set up according to [GM_config](https://github.com/sizzlemctwizzle/GM_config/wiki) by adding them to `this.settings` as an array so they can be read when the core loads.
+
+e.g.
+
+```javascript
+this.settings = [{
+    'label': 'Make chat visible on message',
+    'id': 'make-chat-visible',
+    'type': 'checkbox',
+    'default': true,
+    'section': ['General', 'Fullscreen']
+}];
+```
+
+Settings are stored in the `gmc` object
+
+#### `gmc.get`
+Get the stored value
+```javascript
+gmc.get('make-chat-visible')
+```
+#### `gmc.set`
+Set the stored value from code.
+
+
+```javascript
+gmc.set('make-chat-visible', false)
+```
+<b>Note: Setting the value does not save it. Use `window.plugins.settings.save()` to save it.
+
+Events
+------
+```javascript
+'SettingsOpen': []
+'SettingsSave': []
+'SettingsReset': []
+'SettingsClose': []
+'SettingChange[FieldId]': [newValue, oldValue]
+```
+
+Public Variables
+---------
+* `settings.fields` Array containing all the settings, is only used to initialize GM_config
+
 License
 -----------
 <InstaSynch - Watch Videos with friends.>

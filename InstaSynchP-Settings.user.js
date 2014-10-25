@@ -3,7 +3,7 @@
 // @namespace   InstaSynchP
 // @description Provides the ability to store settings for the plugins
 
-// @version     1.0.6
+// @version     1.0.7
 // @author      Zod-
 // @source      https://github.com/Zod-/InstaSynchP-Settings
 // @license     GPL-3.0
@@ -21,6 +21,7 @@
 function Settings(version) {
     "use strict";
     this.version = version;
+    this.name = 'InstaSynchP Settings';
     this.fields = [];
 }
 
@@ -146,4 +147,4 @@ Settings.prototype.save = function (close) {
 };
 
 window.plugins = window.plugins || {};
-window.plugins.settings = new Settings("1.0.6");
+window.plugins.settings = new Settings('1.0.7');
