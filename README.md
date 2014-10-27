@@ -33,7 +33,7 @@ Set the stored value from code.
 ```javascript
 gmc.set('make-chat-visible', false)
 ```
-<b>Note: Setting the value does not save it. Use `window.plugins.settings.save()` to save it.
+<b>Note: Setting the value does not save it. Use `window.plugins.settings.save()` to save it.</b>
 
 Events
 ------
@@ -51,12 +51,12 @@ Public Variables
 
 License
 -----------
-<InstaSynch - Watch Videos with friends.>
-The MIT License (MIT)
+The MIT License (MIT)<br>
 
+&lt;InstaSynch - Watch Videos with friends.&gt;<br>
 Copyright (c) 2014 InstaSynch
 
-<Bibbytube - Modified InstaSynch client code>
+&lt;Bibbytube - Modified InstaSynch client code&gt;<br>
 Copyright (C) 2014  Zod-
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
