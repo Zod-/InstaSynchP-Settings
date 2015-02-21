@@ -56,7 +56,7 @@ Settings.prototype.executeOnceCore = function() {
             $('<link>', {
               'type': 'text/css',
               'rel': 'stylesheet',
-              'href': 'https://rawgit.com/Zod-/InstaSynchP-Settings/11db369707e631e1b8b6a9f7904816d2df55c367/GMconfig.css'
+              'href': 'https://cdn.rawgit.com/Zod-/InstaSynchP-Settings/11db369707e631e1b8b6a9f7904816d2df55c367/GMconfig.css'
             })
           );
         });
