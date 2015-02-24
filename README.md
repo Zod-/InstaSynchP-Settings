@@ -42,7 +42,7 @@ Events
 'SettingsSave': []
 'SettingsReset': []
 'SettingsClose': []
-'SettingChange[FieldId]': [newValue, oldValue]
+'SettingChange[FieldId]': [oldValue, newValue]
 ```
 
 Public Variables
