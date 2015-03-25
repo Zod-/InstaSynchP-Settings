@@ -3,7 +3,7 @@
 // @namespace   InstaSynchP
 // @description Provides the ability to store settings for the plugins
 
-// @version     1.0.8
+// @version     1.0.9
 // @author      Zod-
 // @source      https://github.com/Zod-/InstaSynchP-Settings
 // @license     MIT
@@ -22,20 +22,20 @@ function Settings(version) {
   this.version = version;
   this.name = 'InstaSynchP Settings';
   this.fields = [];
-}
-
-Settings.prototype.executeOnceCore = function() {
-  "use strict";
-  var th = this;
-  th.fields = th.fields.length === 0 ? undefined : th.fields;
-  cssLoader.add({
+  this.styles = [{
     'name': 'settings',
     'url': 'https://cdn.rawgit.com/Zod-/InstaSynchP-Settings/7dfd1923ab7fff4ef9b201864249d2e1d2ae44ce/settings.css',
     'autoload': true
-  });
+  }];
+}
+
+Settings.prototype.executeOnceCore = function () {
+  "use strict";
+  var th = this;
+  th.fields = th.fields.length === 0 ? undefined : th.fields;
 
   //add the button
-  $('#plugin_settings').click(function() {
+  $('#plugin_settings').click(function () {
     if (gmc.isOpen) {
       th.save(true);
     } else {
@@ -48,9 +48,9 @@ Settings.prototype.executeOnceCore = function() {
     'title': 'InstaSynchP Settings',
     'fields': th.fields,
     'events': {
-      'open': function(args) {
+      'open': function (args) {
         //load GM_config css
-        $('#GM_config').each(function() {
+        $('#GM_config').each(function () {
           //context of the iframe
           $('head', this.contentWindow.document || this.contentDocument).append(
             $('<link>', {
@@ -63,8 +63,8 @@ Settings.prototype.executeOnceCore = function() {
         $('#GM_config').css('height', '90%').css('top', '55px').css('left', '5px').css('width', '375px');
 
         //collapse items in sections when clicking the header
-        $('#GM_config').each(function() {
-          $('#GM_config .section_header', this.contentWindow.document || this.contentDocument).click(function() {
+        $('#GM_config').each(function () {
+          $('#GM_config .section_header', this.contentWindow.document || this.contentDocument).click(function () {
             $(this).parent().children().filter(":not(:first-child)").slideToggle(250);
             if (!$(this).parent().children().eq(0).hasClass('section_desc')) {
               var next = $(this).parent().next();
@@ -76,12 +76,12 @@ Settings.prototype.executeOnceCore = function() {
           });
         });
         //Add a "save and close" button
-        $('#GM_config').each(function() {
+        $('#GM_config').each(function () {
           var saveAndCloseButton = $('#GM_config_closeBtn', this.contentWindow.document || this.contentDocument).clone(false);
           saveAndCloseButton.attr({
             id: 'GM_config_save_closeBtn',
             title: 'Save and close window'
-          }).text("Save and Close").click(function() {
+          }).text("Save and Close").click(function () {
             th.save(true);
           });
 
@@ -90,16 +90,16 @@ Settings.prototype.executeOnceCore = function() {
 
         events.fire('SettingsOpen');
       },
-      'save': function() {
+      'save': function () {
         events.fire('SettingsSave');
       },
-      'reset': function() {
+      'reset': function () {
         events.fire('SettingsReset');
       },
-      'close': function() {
+      'close': function () {
         events.fire('SettingsClose');
       },
-      'change': function(args) {
+      'change': function (args) {
         var setting;
         //fire an event for each setting that changed
         for (setting in args) {
@@ -111,7 +111,7 @@ Settings.prototype.executeOnceCore = function() {
 
     }
   });
-  events.on(th, 'SettingsSaveInternal', function(data) {
+  events.on(th, 'SettingsSaveInternal', function (data) {
     gmc.save();
     if (data.close) {
       gmc.close();
@@ -119,7 +119,7 @@ Settings.prototype.executeOnceCore = function() {
   });
 };
 
-Settings.prototype.save = function(close) {
+Settings.prototype.save = function (close) {
   "use strict";
   //post message to site and catch in the script scope fix for #21
   window.postMessage(JSON.stringify({
@@ -131,4 +131,4 @@ Settings.prototype.save = function(close) {
 };
 
 window.plugins = window.plugins || {};
-window.plugins.settings = new Settings('1.0.8');
+window.plugins.settings = new Settings('1.0.9');
