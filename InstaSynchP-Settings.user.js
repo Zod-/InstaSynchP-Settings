@@ -17,117 +17,151 @@
 // @require     https://greasyfork.org/scripts/5647-instasynchp-library/code/InstaSynchP%20Library.js?version=37716
 // ==/UserScript==
 
+function SettingsField(opts) {
+  'use strict';
+  this.type = opts.type;
+  this.label = opts.label;
+  this.id = opts.id;
+  this.default = opts.default;
+  this.title = opts.title || '';
+  this.tooltipPlacement = opts.tooltipPlacement;
+  this.destination = opts.destination || '#tabs_chat_settings_content';
+  this.$div = $('<div>');
+  this.init();
+  this.buildDiv();
+}
+
+SettingsField.prototype.init = function () {
+  'use strict';
+  var _this = this;
+  if (_this.get() === null) {
+    _this.set(_this.default);
+  }
+};
+
+SettingsField.prototype.get = function () {
+  'use strict';
+  return window.localStorage.getItem(this.id);
+};
+
+SettingsField.prototype.set = function (val) {
+  'use strict';
+  window.localStorage.setItem(this.id, val);
+};
+
+SettingsField.prototype.createTooltip = function () {
+  'use strict';
+  var _this = this;
+  return $('<label>', {
+    class: 'active_toolip',
+    'data-original-title': _this.title || '',
+    'data-placement': _this.tooltipPlacement || 'bottom'
+  }).tooltip();
+};
+
+SettingsField.prototype.createInput = function () {
+  'use strict';
+  var _this = this;
+  switch (_this.type) {
+  case 'checkbox':
+    return _this.createCheckboxInput();
+  }
+};
+
+SettingsField.prototype.createCheckboxInput = function () {
+  'use strict';
+  var _this = this;
+  //TODO set checked/unchecked from the stored value
+  _this.$div.addClass('checkbox');
+  return $('<input>', {
+    id: 'instasyncp-settings-checkbox-' + _this.id,
+    type: 'checkbox'
+  });
+  //$("#checkbox").attr("checked", true);
+};
+
+SettingsField.prototype.buildDiv = function () {
+  'use strict';
+  var _this = this;
+  var $tooltip = _this.createTooltip();
+  var $input = _this.createInput();
+
+  _this.$div.append($tooltip.append($input).append(_this.label));
+};
+
+
 function Settings(version) {
-  "use strict";
+  'use strict';
   this.version = version;
   this.name = 'InstaSynchP Settings';
   this.fields = [];
-  this.styles = [{
-    'name': 'settings',
-    'url': 'https://cdn.rawgit.com/Zod-/InstaSynchP-Settings/7dfd1923ab7fff4ef9b201864249d2e1d2ae44ce/settings.css',
-    'autoload': true
-  }];
+  this.SettingsField = SettingsField;
 }
 
-Settings.prototype.executeOnceCore = function () {
-  "use strict";
-  var th = this;
-  th.fields = th.fields.length === 0 ? undefined : th.fields;
-
-  //add the button
-  $('#plugin_settings').click(function () {
-    if (gmc.isOpen) {
-      th.save(true);
-    } else {
-      gmc.open();
-    }
-  });
-
-  window.gmc = new GM_configStruct({
-    'id': 'GM_config',
-    'title': 'InstaSynchP Settings',
-    'fields': th.fields,
-    'events': {
-      'open': function (args) {
-        //load GM_config css
-        $('#GM_config').each(function () {
-          //context of the iframe
-          $('head', this.contentWindow.document || this.contentDocument).append(
-            $('<link>', {
-              'type': 'text/css',
-              'rel': 'stylesheet',
-              'href': 'https://cdn.rawgit.com/Zod-/InstaSynchP-Settings/11db369707e631e1b8b6a9f7904816d2df55c367/GMconfig.css'
-            })
-          );
-        });
-        $('#GM_config').css('height', '90%').css('top', '55px').css('left', '5px').css('width', '375px');
-
-        //collapse items in sections when clicking the header
-        $('#GM_config').each(function () {
-          $('#GM_config .section_header', this.contentWindow.document || this.contentDocument).click(function () {
-            $(this).parent().children().filter(":not(:first-child)").slideToggle(250);
-            if (!$(this).parent().children().eq(0).hasClass('section_desc')) {
-              var next = $(this).parent().next();
-              while (next.children().eq(0).hasClass('section_desc')) {
-                next.slideToggle(250);
-                next = next.next();
-              }
-            }
-          });
-        });
-        //Add a "save and close" button
-        $('#GM_config').each(function () {
-          var saveAndCloseButton = $('#GM_config_closeBtn', this.contentWindow.document || this.contentDocument).clone(false);
-          saveAndCloseButton.attr({
-            id: 'GM_config_save_closeBtn',
-            title: 'Save and close window'
-          }).text("Save and Close").click(function () {
-            th.save(true);
-          });
-
-          $('#GM_config_buttons_holder > :last-child', this.contentWindow.document || this.contentDocument).before(saveAndCloseButton);
-        });
-
-        events.fire('SettingsOpen');
-      },
-      'save': function () {
-        events.fire('SettingsSave');
-      },
-      'reset': function () {
-        events.fire('SettingsReset');
-      },
-      'close': function () {
-        events.fire('SettingsClose');
-      },
-      'change': function (args) {
-        var setting;
-        //fire an event for each setting that changed
-        for (setting in args) {
-          if (args.hasOwnProperty(setting)) {
-            events.fire('SettingChange[{0}]'.format(setting), [args[setting].old, args[setting].new]);
-          }
-        }
-      }
-
-    }
-  });
-  events.on(th, 'SettingsSaveInternal', function (data) {
-    gmc.save();
-    if (data.close) {
-      gmc.close();
-    }
-  });
+Settings.prototype.removeInstaSyncSettings = function () {
+  'use strict';
+  $('#toggle_greyname_chat').parent().parent().remove();
+  $('#toggle_show_joined').parent().parent().remove();
 };
 
-Settings.prototype.save = function (close) {
-  "use strict";
-  //post message to site and catch in the script scope fix for #21
-  window.postMessage(JSON.stringify({
-    action: 'SettingsSaveInternal',
-    data: {
-      close: close
-    }
-  }), "*");
+Settings.prototype.preConnect = function () {
+  'use strict';
+  //TODO move into css file
+  $('#tabs_chat_settings_content').css('overflow-y', 'auto');
+};
+
+Settings.prototype.executeOnceCore = function () {
+  'use strict';
+  var _this = this;
+  var newFields = {};
+  _this.removeInstaSyncSettings();
+  _this.fields.forEach(function (field, i) {
+    field = new _this.SettingsField(field);
+    newFields[field.id] = field;
+    $(field.destination).append(field.$div);
+  });
+  _this.fields = newFields;
+  window.gmc = _this;
+};
+
+
+Settings.prototype.log = function (opts) {
+  'use strict';
+  var args = [];
+  opts.type = opts.type || 'debug';
+  args.push(this.name);
+  args.push(opts.event);
+  logger()[opts.type].apply(logger(), args);
+};
+
+Settings.prototype.get = function (id, fallback) {
+  'use strict';
+  var _this = this;
+  if (!_this.fields.hasOwnProperty(id)) {
+    return fallback;
+  }
+  _this.log({
+    event: 'getting a setting that does not exist ' + id,
+    type: 'warn'
+  });
+  return _this.fields[id].get();
+};
+
+Settings.prototype.set = function (id, newVal) {
+  'use strict';
+  var _this = this;
+  var field = _this.fields[id];
+  var oldVal;
+  if (_this.fields.hasOwnProperty(id)) {
+    oldVal = field.get();
+    field.set(newVal);
+    events.fire('SettingChange[{0}]'.format(field.id), [oldVal, newVal]);
+  } else {
+    _this.log({
+      event: 'setting a setting that does not exist ' + id,
+      type: 'warn'
+    });
+  }
 };
 
 window.plugins = window.plugins || {};
