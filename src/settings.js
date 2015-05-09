@@ -68,5 +68,9 @@ Settings.prototype.set = function (id, newVal) {
   }
 };
 
+Settings.prototype.save = function () {
+  'use strict';
+};
+
 window.plugins = window.plugins || {};
 window.plugins.settings = new Settings();
