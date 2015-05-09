@@ -7,6 +7,7 @@ function SettingsField(opts) {
   this.title = opts.title || '';
   this.tooltipPlacement = opts.tooltipPlacement || 'bottom';
   this.destination = opts.destination || '#tabs_chat_settings_content';
+  this.hidden = opts.hidden || false;
   this.$div = $('<div>');
   this.oldVal = undefined;
   this.val = undefined;
@@ -108,4 +109,7 @@ SettingsField.prototype.buildDiv = function () {
   var $input = _this.createInput();
 
   _this.$div.append($tooltip.append($input).append(_this.label));
+  if (_this.hidden) {
+    _this.$div.hide();
+  }
 };
