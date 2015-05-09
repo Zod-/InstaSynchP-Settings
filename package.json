@@ -1,0 +1,45 @@
+{
+  "name": "InstaSynchP-Settings",
+  "version": "1.0.9",
+  "description": "Provides the ability to store settings for the plugins",
+  "main": "Gruntfile.js",
+  "scripts": {
+    "test": "grunt --verbose"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Zod-/InstaSynchP-Settings.git"
+  },
+  "keywords": [
+    "InstaSync"
+  ],
+  "author": {
+    "name": "Julian Hangstörfer",
+    "email": "jhangstoerfer@gmail.com"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Zod-/InstaSynchP-Settings/issues"
+  },
+  "homepage": "https://github.com/Zod-/InstaSynchP-Settings",
+  "userscript": {
+    "namespace": "InstaSynchP",
+    "author": {
+      "name": "Zod-"
+    },
+    "require": {
+      "greasyfork": {
+        "id": "5647-instasynchp-library",
+        "version": "49210"
+      }
+    },
+    "other": {
+      "include": [
+        "*://instasync.com/r/*",
+        "*://*.instasync.com/r/*"
+      ],
+      "grant": "none",
+      "run-at": "document-start"
+    }
+  }
+}
