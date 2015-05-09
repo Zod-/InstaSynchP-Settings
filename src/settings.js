@@ -46,24 +46,20 @@ Settings.prototype.get = function (id, fallback) {
   'use strict';
   var _this = this;
   if (!_this.fields.hasOwnProperty(id)) {
+    _this.log({
+      event: 'getting a setting that does not exist ' + id,
+      type: 'warn'
+    });
     return fallback;
   }
-  _this.log({
-    event: 'getting a setting that does not exist ' + id,
-    type: 'warn'
-  });
   return _this.fields[id].get();
 };
 
 Settings.prototype.set = function (id, newVal) {
   'use strict';
   var _this = this;
-  var field = _this.fields[id];
-  var oldVal;
   if (_this.fields.hasOwnProperty(id)) {
-    oldVal = field.get();
-    field.set(newVal);
-    events.fire('SettingChange[{0}]'.format(field.id), [oldVal, newVal]);
+    _this.fields[id].set(newVal);
   } else {
     _this.log({
       event: 'setting a setting that does not exist ' + id,

@@ -5,9 +5,11 @@ function SettingsField(opts) {
   this.id = opts.id;
   this.default = opts.default;
   this.title = opts.title || '';
-  this.tooltipPlacement = opts.tooltipPlacement;
+  this.tooltipPlacement = opts.tooltipPlacement || 'bottom';
   this.destination = opts.destination || '#tabs_chat_settings_content';
   this.$div = $('<div>');
+  this.oldVal = undefined;
+  this.val = undefined;
   this.init();
   this.buildDiv();
 }
@@ -15,43 +17,59 @@ function SettingsField(opts) {
 SettingsField.prototype.init = function () {
   'use strict';
   var _this = this;
-  if (_this.get() === null) {
-    _this.set(_this.default);
+  if (!window.localStorage.hasOwnProperty(_this.id)) {
+    _this.setStorage(_this.default);
   }
+  _this.getFromStorage();
+  _this.oldVal = _this.val;
+};
+
+SettingsField.prototype.getFromStorage = function () {
+  'use strict';
+  var _this = this;
+  var val = window.localStorage.getItem(_this.id);
+
+  switch (_this.type) {
+  case 'checkbox':
+    val = (val === 'true');
+    break;
+  }
+
+  _this.val = val;
 };
 
 SettingsField.prototype.get = function () {
   'use strict';
+  return this.val;
+};
+
+SettingsField.prototype.setStorage = function (val) {
+  'use strict';
   var _this = this;
 
-  function getStorage() {
-    return window.localStorage.getItem(_this.id);
+  switch (_this.type) {
+  case 'checkbox':
+    val = !!val;
+    break;
   }
 
-  switch (this.type) {
-  case 'checkbox':
-    return Boolean(getStorage());
-  default:
-    return getStorage();
-  }
+  window.localStorage.setItem(_this.id, val);
 };
 
 SettingsField.prototype.set = function (val) {
   'use strict';
   var _this = this;
-
-  function setStorage(v) {
-    window.localStorage.setItem(_this.id, v);
+  _this.oldVal = _this.val;
+  _this.setStorage(val);
+  _this.getFromStorage();
+  if (_this.oldVal !== _this.val) {
+    _this.onChange();
   }
+};
 
-  switch (this.type) {
-  case 'checkbox':
-    setStorage(!!val);
-    break;
-  default:
-    setStorage(val);
-    break;
-  }
+SettingsField.prototype.onChange = function () {
+  'use strict';
+  events.fire('SettingChange[{0}]'.format(this.id), [this.oldVal, this.val]);
 };
 
 SettingsField.prototype.createTooltip = function () {
@@ -59,8 +77,8 @@ SettingsField.prototype.createTooltip = function () {
   var _this = this;
   return $('<label>', {
     class: 'active_toolip',
-    'data-original-title': _this.title || '',
-    'data-placement': _this.tooltipPlacement || 'bottom'
+    'data-original-title': _this.title,
+    'data-placement': _this.tooltipPlacement
   }).tooltip();
 };
 
