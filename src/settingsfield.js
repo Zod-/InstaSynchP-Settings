@@ -22,12 +22,36 @@ SettingsField.prototype.init = function () {
 
 SettingsField.prototype.get = function () {
   'use strict';
-  return window.localStorage.getItem(this.id);
+  var _this = this;
+
+  function getStorage() {
+    return window.localStorage.getItem(_this.id);
+  }
+
+  switch (this.type) {
+  case 'checkbox':
+    return Boolean(getStorage());
+  default:
+    return getStorage();
+  }
 };
 
 SettingsField.prototype.set = function (val) {
   'use strict';
-  window.localStorage.setItem(this.id, val);
+  var _this = this;
+
+  function setStorage(v) {
+    window.localStorage.setItem(_this.id, v);
+  }
+
+  switch (this.type) {
+  case 'checkbox':
+    setStorage(!!val);
+    break;
+  default:
+    setStorage(val);
+    break;
+  }
 };
 
 SettingsField.prototype.createTooltip = function () {
@@ -57,7 +81,7 @@ SettingsField.prototype.createCheckboxInput = function () {
   return $('<input>', {
     id: 'instasyncp-settings-checkbox-' + _this.id,
     type: 'checkbox'
-  });
+  }).prop('checked', _this.get());
   //$("#checkbox").attr("checked", true);
 };
 
