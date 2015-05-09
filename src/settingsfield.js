@@ -76,13 +76,11 @@ SettingsField.prototype.createInput = function () {
 SettingsField.prototype.createCheckboxInput = function () {
   'use strict';
   var _this = this;
-  //TODO set checked/unchecked from the stored value
   _this.$div.addClass('checkbox');
   return $('<input>', {
     id: 'instasyncp-settings-checkbox-' + _this.id,
     type: 'checkbox'
   }).prop('checked', _this.get());
-  //$("#checkbox").attr("checked", true);
 };
 
 SettingsField.prototype.buildDiv = function () {
