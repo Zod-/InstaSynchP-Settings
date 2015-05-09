@@ -99,7 +99,9 @@ SettingsField.prototype.createCheckboxInput = function () {
   return $('<input>', {
     id: 'instasyncp-settings-checkbox-' + _this.id,
     type: 'checkbox'
-  }).prop('checked', _this.get());
+  }).prop('checked', _this.get()).change(function(){
+    _this.set($(this).is(':checked'));
+  });
 };
 
 SettingsField.prototype.buildDiv = function () {
