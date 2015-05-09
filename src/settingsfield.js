@@ -1,10 +1,11 @@
 function SettingsField(opts) {
   'use strict';
   this.type = opts.type;
-  this.label = opts.label;
+  this.label = opts.label || '';
   this.id = opts.id;
   this.default = opts.default;
   this.title = opts.title || '';
+  this.section = opts.section || ['General'];
   this.tooltipPlacement = opts.tooltipPlacement || 'bottom';
   this.destination = opts.destination || 'chat';
   this.hidden = opts.hidden || false;

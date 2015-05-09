@@ -9,6 +9,16 @@ function Settings() {
     playlist: '#tabs_playlist_settings',
     plugin: '#tabs_plugin_list'
   };
+  var temp = {
+    InstaSync: {
+      fields: []
+    }
+  };
+  this.sections = {
+    chat: JSON.parse(JSON.stringify(temp)),
+    playlist: JSON.parse(JSON.stringify(temp)),
+    plugin: JSON.parse(JSON.stringify(temp))
+  };
 }
 
 Settings.prototype.removeInstaSyncSettings = function () {
@@ -23,18 +33,107 @@ Settings.prototype.preConnect = function () {
   $('#tabs_chat_settings_content').css('overflow-y', 'auto');
 };
 
-Settings.prototype.executeOnceCore = function () {
+Settings.prototype.createFields = function () {
   'use strict';
   var _this = this;
   var newFields = {};
-  _this.removeInstaSyncSettings();
   _this.fields.forEach(function (field) {
     field = new _this.SettingsField(field);
     newFields[field.id] = field;
-    $(_this.destinations[field.destination]).append(field.$div);
+    _this.addToSection(field);
   });
+  _this.sortSections();
   _this.fields = newFields;
-  window.gmc = _this;
+};
+
+Settings.prototype.forEachDestination = function (callback) {
+  'use strict';
+  var _this = this;
+  Object.keys(_this.sections).forEach(function (destinationName) {
+    callback({
+      name: destinationName,
+      value: _this.sections[destinationName]
+    });
+  });
+};
+
+Settings.prototype.forEachSection = function (callback) {
+  'use strict';
+  var _this = this;
+  _this.forEachDestination(function (destinationPair) {
+    Object.keys(destinationPair.value).forEach(function (sectionName) {
+      callback(destinationPair, {
+        name: sectionName,
+        value: destinationPair.value[sectionName]
+      });
+    });
+  });
+};
+
+Settings.prototype.forEachField = function (callback) {
+  'use strict';
+  var _this = this;
+  _this.forEachSection(function (destinationPair, sectionPair) {
+    sectionPair.value.fields.forEach(function (field) {
+      callback(destinationPair, sectionPair, field);
+    });
+  });
+};
+
+Settings.prototype.sortSections = function () {
+  'use strict';
+  var _this = this;
+  _this.forEachSection(function (destination, section) {
+    section.value.fields.sort(function (field, otherField) {
+      return field.label.localeCompare(otherField.label);
+    });
+  });
+};
+
+Settings.prototype.addToSection = function (field) {
+  'use strict';
+  var _this = this;
+  if (field.hidden) {
+    return;
+  }
+  var sectionName = field.section[1] || field.section[0];
+  var destination = _this.sections[field.destination];
+  if (!destination.hasOwnProperty(sectionName)) {
+    destination[sectionName] = {
+      fields: []
+    };
+  }
+  destination[sectionName].fields.push(field);
+};
+
+Settings.prototype.addFieldsToSite = function () {
+  'use strict';
+  var _this = this;
+  _this.forEachField(function (destinationPair, sectionPair, field) {
+    var destinationSelector = _this.destinations[destinationPair.name];
+    if (!sectionPair.value.isCreated) {
+      //TODO move into css file
+      $(destinationSelector).append(
+        $('<div>').css('border-bottom', '1px solid rgba(0,0,0,0.15)')
+        .css('margin-bottom', '-10px')
+        .css('margin-top', '10px')
+        .css('font-weight', 'bold')
+        .text(sectionPair.name)
+      );
+      sectionPair.value.isCreated = true;
+    }
+
+    $(destinationSelector).append(field.$div);
+  });
+};
+
+Settings.prototype.executeOnceCore = function () {
+  'use strict';
+  var _this = this;
+  _this.removeInstaSyncSettings();
+  _this.createFields();
+  _this.addFieldsToSite();
+
   $('#tabs_playlist_settings').append(
     $('#tabs_playlist_settings .mod-control').detach()
   );
@@ -82,3 +181,4 @@ Settings.prototype.save = function () {
 
 window.plugins = window.plugins || {};
 window.plugins.settings = new Settings();
+window.gmc = window.plugins.settings;
