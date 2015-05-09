@@ -23,7 +23,7 @@ Settings.prototype.executeOnceCore = function () {
   var _this = this;
   var newFields = {};
   _this.removeInstaSyncSettings();
-  _this.fields.forEach(function (field, i) {
+  _this.fields.forEach(function (field) {
     field = new _this.SettingsField(field);
     newFields[field.id] = field;
     $(field.destination).append(field.$div);
