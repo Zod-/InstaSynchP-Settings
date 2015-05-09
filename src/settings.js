@@ -4,6 +4,11 @@ function Settings() {
   this.name = 'InstaSynchP Settings';
   this.fields = [];
   this.SettingsField = SettingsField;
+  this.destinations = {
+    chat: '#tabs_chat_settings_content',
+    playlist: '#tabs_playlist_settings',
+    plugin: '#tabs_plugin_list'
+  };
 }
 
 Settings.prototype.removeInstaSyncSettings = function () {
@@ -26,10 +31,13 @@ Settings.prototype.executeOnceCore = function () {
   _this.fields.forEach(function (field) {
     field = new _this.SettingsField(field);
     newFields[field.id] = field;
-    $(field.destination).append(field.$div);
+    $(_this.destinations[field.destination]).append(field.$div);
   });
   _this.fields = newFields;
   window.gmc = _this;
+  $('#tabs_playlist_settings').append(
+    $('#tabs_playlist_settings .mod-control').detach()
+  );
 };
 
 

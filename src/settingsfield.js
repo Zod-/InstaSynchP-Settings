@@ -6,7 +6,7 @@ function SettingsField(opts) {
   this.default = opts.default;
   this.title = opts.title || '';
   this.tooltipPlacement = opts.tooltipPlacement || 'bottom';
-  this.destination = opts.destination || '#tabs_chat_settings_content';
+  this.destination = opts.destination || 'chat';
   this.hidden = opts.hidden || false;
   this.$div = $('<div>');
   this.oldVal = undefined;
