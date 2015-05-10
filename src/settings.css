@@ -10,14 +10,15 @@
   overflow-y: auto;
 }
 
-.instasync_settings_field {
+.instasync_settings_section {
   border-bottom: 1px solid rgba(0, 0, 0, 0.15);
-  margin-bottom: -10px;
-  margin-top: 10px;
+  margin-bottom: -8px;
+  margin-top: 8px;
   font-weight: bold;
 }
 
-.instasync_settings_text {
+.instasync_settings_text,
+.instasync_settings_select {
   position: relative;
   display: block;
   min-height: 20px;
@@ -30,13 +31,15 @@
   margin-top: -5px;
 }
 
-.instasync_settings_text label {
+.instasync_settings_text label,
+.instasync_settings_select label {
   margin-bottom: 0;
   font-weight: 400;
 }
 
 /* taken from the v4c script made by biggles */
-.instasync_settings_text label input {
+.instasync_settings_text label input,
+.instasync_settings_select label select {
   border-radius: 4px;
   border: 1px solid #bbb;
   padding: 0 2px;

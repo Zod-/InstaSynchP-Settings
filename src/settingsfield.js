@@ -6,6 +6,7 @@ function SettingsField(opts) {
   this.default = opts.default;
   this.title = opts.title || '';
   this.size = opts.size || 2;
+  this.options = opts.options;
   this.section = opts.section || ['General'];
   this.tooltipPlacement = opts.tooltipPlacement || 'bottom';
   this.destination = opts.destination || 'chat';
@@ -57,6 +58,7 @@ SettingsField.prototype.updateDisplay = function (fromGUI) {
     break;
   case 'int':
   case 'text':
+  case 'select':
     _this.$input.val(_this.get());
     break;
   }
@@ -116,11 +118,31 @@ SettingsField.prototype.createInput = function () {
   case 'text':
   case 'int':
     return _this.createStringInput();
+  case 'select':
+    return _this.createSelectInput();
     //TODO remove when all types are implemented
   default:
     logger().warn(_this.name, 'settingtype not implemented yet ' + _this.type);
     _this.hidden = true;
   }
+};
+
+SettingsField.prototype.createSelectInput = function () {
+  'use strict';
+  var _this = this;
+  _this.$div.addClass('instasync_settings_select');
+  var $input =  $('<select>', {
+    id: 'instasyncp-settings-text-' + _this.id
+  }).on('change', function () {
+    _this.set($(this).val(), true);
+  });
+  _this.options.forEach(function(option){
+    $input.append(
+      $('<option>').text(option)
+    );
+  });
+  $input.val(_this.get());
+  return $input;
 };
 
 SettingsField.prototype.createStringInput = function () {

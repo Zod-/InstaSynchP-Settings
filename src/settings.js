@@ -121,7 +121,7 @@ Settings.prototype.addFieldsToSite = function () {
     if (!sectionPair.value.isCreated) {
       $(destinationSelector).append(
         $('<div>', {
-          class: 'instasync_settings_field'
+          class: 'instasync_settings_section'
         }).text(sectionPair.name)
       );
       sectionPair.value.isCreated = true;
