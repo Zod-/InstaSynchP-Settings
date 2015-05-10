@@ -26,7 +26,7 @@ module.exports = function (grunt) {
             }
           }, {
             pattern: /@RAWGITREPO@/g,
-            replacement: 'https://cdn.rawgit.com/Zod-/InstaSynchP-Core'
+            replacement: 'https://cdn.rawgit.com/Zod-/InstaSynchP-Settings'
           }, ]
         }
       }
