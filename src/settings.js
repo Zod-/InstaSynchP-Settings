@@ -89,7 +89,7 @@ Settings.prototype.postConnect = function () {
   var _this = this;
   window.room.autosync = _this.get('instasync-autosync');
   window.room.showYTcontrols = _this.get('instasync-yt-controls');
-  window.room.filterGreyname = _this.get('instasync-greynames-chat');
+  window.room.filterGreyname = !_this.get('instasync-greynames-chat');
   window.room.playerDisabled = _this.get('instasync-disable-player');
   reloadPlayer();
 };
@@ -340,7 +340,7 @@ Settings.prototype.persistentSettings = function () {
     reloadPlayer();
   });
   events.on(_this, 'SettingChange[instasync-greynames-chat]', function (ig, v) {
-    window.room.filterGreyname = v;
+    window.room.filterGreyname = !v;
   });
   events.on(_this, 'SettingChange[instasync-disable-player]', function (ig, v) {
     window.room.playerDisabled = v;
