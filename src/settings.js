@@ -4,6 +4,11 @@ function Settings() {
   this.name = 'InstaSynchP Settings';
   this.fields = [];
   this.SettingsField = SettingsField;
+  this.styles = [{
+    name: 'instasync-settings',
+    url: '@RAWGITREPO@/@SETTINGSCSSREV@/dist/settings.css',
+    autoload: true
+  }];
   this.destinations = {
     chat: '#tabs_chat_settings_content',
     playlist: '#tabs_playlist_settings',
@@ -362,7 +367,6 @@ Settings.prototype.executeOnce = function () {
     _this.updateIntervalId = setInterval(function () {
       _this.searchUpdates();
     }, getTime(timeString) * 1000);
-
   }
 
   events.on(_this, 'SettingChange[update-timer]', function (ignore, newVal) {
