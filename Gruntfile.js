@@ -77,6 +77,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-shell');
   grunt.loadNpmTasks('grunt-contrib-copy');
 
+  grunt.registerTask('test', ['jshint']);
   grunt.registerTask('build-css', ['copy']);
   grunt.registerTask('build-js', ['shell', 'userscript-meta', 'concat',
     'string-replace'
