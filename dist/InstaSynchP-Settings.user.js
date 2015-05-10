@@ -2,7 +2,7 @@
 // @name         InstaSynchP Settings
 // @namespace    InstaSynchP
 // @description  Provides the ability to store settings for the plugins
-// @version      1.1.1
+// @version      1.1.2
 // @author       Zod-
 // @source       https://github.com/Zod-/InstaSynchP-Settings
 // @license      MIT
@@ -217,7 +217,7 @@ SettingsField.prototype.buildDiv = function () {
 
 function Settings() {
   'use strict';
-  this.version = '1.1.1';
+  this.version = '1.1.2';
   this.name = 'InstaSynchP Settings';
   this.fields = [];
   this.SettingsField = SettingsField;
@@ -306,7 +306,7 @@ Settings.prototype.postConnect = function () {
   var _this = this;
   window.room.autosync = _this.get('instasync-autosync');
   window.room.showYTcontrols = _this.get('instasync-yt-controls');
-  window.room.filterGreyname = _this.get('instasync-greynames-chat');
+  window.room.filterGreyname = !_this.get('instasync-greynames-chat');
   window.room.playerDisabled = _this.get('instasync-disable-player');
   reloadPlayer();
 };
@@ -557,7 +557,7 @@ Settings.prototype.persistentSettings = function () {
     reloadPlayer();
   });
   events.on(_this, 'SettingChange[instasync-greynames-chat]', function (ig, v) {
-    window.room.filterGreyname = v;
+    window.room.filterGreyname = !v;
   });
   events.on(_this, 'SettingChange[instasync-disable-player]', function (ig, v) {
     window.room.playerDisabled = v;
