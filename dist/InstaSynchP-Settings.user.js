@@ -2,7 +2,7 @@
 // @name         InstaSynchP Settings
 // @namespace    InstaSynchP
 // @description  Provides the ability to store settings for the plugins
-// @version      1.1.0
+// @version      1.1.1
 // @author       Zod-
 // @source       https://github.com/Zod-/InstaSynchP-Settings
 // @license      MIT
@@ -217,7 +217,7 @@ SettingsField.prototype.buildDiv = function () {
 
 function Settings() {
   'use strict';
-  this.version = '1.1.0';
+  this.version = '1.1.1';
   this.name = 'InstaSynchP Settings';
   this.fields = [];
   this.SettingsField = SettingsField;
@@ -285,7 +285,7 @@ function Settings() {
     'Chat': ['ModSpy', 'UserSpy', 'Input History', 'Autocomplete',
       'Emote Names', 'Name Completion', 'SysMessage Hide', 'Timestamp'
     ],
-    'General': ['Layouts', 'Poll Menu', 'Bibby', 'Persistent Settings'],
+    'General': ['Layouts', 'Poll Menu', 'Bibby'],
     'Commands': ['Bump', 'TrimWall'],
     'Playlist': ['Wallcounter', 'History']
   };
