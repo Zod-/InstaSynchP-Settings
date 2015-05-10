@@ -68,7 +68,7 @@ function Settings() {
     'Chat': ['ModSpy', 'UserSpy', 'Input History', 'Autocomplete',
       'Emote Names', 'Name Completion', 'SysMessage Hide', 'Timestamp'
     ],
-    'General': ['Layouts', 'Poll Menu', 'Bibby', 'Persistent Settings'],
+    'General': ['Layouts', 'Poll Menu', 'Bibby'],
     'Commands': ['Bump', 'TrimWall'],
     'Playlist': ['Wallcounter', 'History']
   };
