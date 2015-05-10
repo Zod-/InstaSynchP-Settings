@@ -1,0 +1,18 @@
+#tabs_chat_settings_content .btn {
+  margin-right: 4px;
+}
+
+#log_btn {
+  margin-left: -4px;
+}
+
+#tabs_chat_settings_content {
+  overflow-y: auto;
+}
+
+.instasync_settings_field {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+  margin-bottom: -10px;
+  margin-top: 10px;
+  font-weight: bold;
+}

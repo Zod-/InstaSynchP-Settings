@@ -10,6 +10,7 @@ function SettingsField(opts) {
   this.destination = opts.destination || 'chat';
   this.hidden = opts.hidden || false;
   this.$div = $('<div>');
+  this.$input = undefined;
   this.oldVal = undefined;
   this.val = undefined;
   this.init();
@@ -40,6 +41,16 @@ SettingsField.prototype.getFromStorage = function () {
   _this.val = val;
 };
 
+SettingsField.prototype.updateDisplay = function () {
+  'use strict';
+  var _this = this;
+  switch (_this.type) {
+  case 'checkbox':
+    _this.$input.prop('checked', _this.get());
+    break;
+  }
+};
+
 SettingsField.prototype.get = function () {
   'use strict';
   return this.val;
@@ -64,6 +75,7 @@ SettingsField.prototype.set = function (val) {
   _this.oldVal = _this.val;
   _this.setStorage(val);
   _this.getFromStorage();
+  _this.updateDisplay();
   if (_this.oldVal !== _this.val) {
     _this.onChange();
   }
@@ -90,6 +102,8 @@ SettingsField.prototype.createInput = function () {
   switch (_this.type) {
   case 'checkbox':
     return _this.createCheckboxInput();
+  default:
+    _this.hidden = true;
   }
 };
 
@@ -100,7 +114,7 @@ SettingsField.prototype.createCheckboxInput = function () {
   return $('<input>', {
     id: 'instasyncp-settings-checkbox-' + _this.id,
     type: 'checkbox'
-  }).prop('checked', _this.get()).change(function(){
+  }).prop('checked', _this.get()).change(function () {
     _this.set($(this).is(':checked'));
   });
 };
@@ -109,9 +123,9 @@ SettingsField.prototype.buildDiv = function () {
   'use strict';
   var _this = this;
   var $tooltip = _this.createTooltip();
-  var $input = _this.createInput();
+  _this.$input = _this.createInput();
 
-  _this.$div.append($tooltip.append($input).append(_this.label));
+  _this.$div.append($tooltip.append(_this.$input).append(_this.label));
   if (_this.hidden) {
     _this.$div.hide();
   }

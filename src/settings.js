@@ -27,10 +27,17 @@ Settings.prototype.removeInstaSyncSettings = function () {
   $('#toggle_show_joined').parent().parent().remove();
 };
 
-Settings.prototype.preConnect = function () {
+Settings.prototype.createResetButton = function () {
   'use strict';
-  //TODO move into css file
-  $('#tabs_chat_settings_content').css('overflow-y', 'auto');
+  var _this = this;
+  $(_this.destinations.chat).append(
+    $('<button>', {
+      id: 'instasyncp-settings-reset',
+      class: 'btn btn-xs btn-danger btn-primary'
+    }).text('Reset InstaSyncP Settings').click(function () {
+      _this.reset();
+    })
+  );
 };
 
 Settings.prototype.createFields = function () {
@@ -112,13 +119,10 @@ Settings.prototype.addFieldsToSite = function () {
   _this.forEachField(function (destinationPair, sectionPair, field) {
     var destinationSelector = _this.destinations[destinationPair.name];
     if (!sectionPair.value.isCreated) {
-      //TODO move into css file
       $(destinationSelector).append(
-        $('<div>').css('border-bottom', '1px solid rgba(0,0,0,0.15)')
-        .css('margin-bottom', '-10px')
-        .css('margin-top', '10px')
-        .css('font-weight', 'bold')
-        .text(sectionPair.name)
+        $('<div>', {
+          class: 'instasync_settings_field'
+        }).text(sectionPair.name)
       );
       sectionPair.value.isCreated = true;
     }
@@ -131,6 +135,7 @@ Settings.prototype.executeOnceCore = function () {
   'use strict';
   var _this = this;
   _this.removeInstaSyncSettings();
+  _this.createResetButton();
   _this.createFields();
   _this.addFieldsToSite();
 
@@ -139,6 +144,16 @@ Settings.prototype.executeOnceCore = function () {
   );
 };
 
+Settings.prototype.reset = function () {
+  'use strict';
+  var _this = this;
+  Object.keys(_this.fields).forEach(function (field) {
+    field = _this.fields[field];
+    if (!field.hidden) {
+      field.set(field.default);
+    }
+  });
+};
 
 Settings.prototype.log = function (opts) {
   'use strict';
