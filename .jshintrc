@@ -6,7 +6,9 @@
     "plugins":       true,
     "SettingsField": true,
     "createNavTab":  true,
-    "getTime":       true
+    "getTime":       true,
+    "reloadPlayer":  true,
+    "sendcmd":       true
   },
   "qunit":       true,
   "jquery":      true,
