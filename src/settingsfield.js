@@ -9,7 +9,7 @@ function SettingsField(opts) {
   this.options = opts.options;
   this.section = opts.section || ['General'];
   this.disabled = opts.disabled || false;
-  this.tooltipPlacement = opts.tooltipPlacement || 'bottom';
+  this.tooltipPlacement = opts.tooltipPlacement || 'top';
   this.destination = opts.destination || 'chat';
   this.hidden = opts.hidden || false;
   this.$div = $('<div>');
