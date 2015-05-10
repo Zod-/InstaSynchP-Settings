@@ -365,7 +365,7 @@ Settings.prototype.executeOnce = function () {
       return;
     }
     _this.updateIntervalId = setInterval(function () {
-      _this.searchUpdates();
+      _this.searchPluginUpdates();
     }, getTime(timeString) * 1000);
   }
 
