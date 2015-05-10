@@ -459,6 +459,7 @@ Settings.prototype.executeOnceCore = function () {
   var _this = this;
   _this.collectSettings();
   _this.removeInstaSyncSettings();
+  _this.persistentSettings();
   _this.createPluginTab();
   _this.createPluginFields();
   _this.createResetButtons();
