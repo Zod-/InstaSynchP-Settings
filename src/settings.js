@@ -196,4 +196,5 @@ Settings.prototype.save = function () {
 
 window.plugins = window.plugins || {};
 window.plugins.settings = new Settings();
+//TODO remove after removing references in other plugins
 window.gmc = window.plugins.settings;
