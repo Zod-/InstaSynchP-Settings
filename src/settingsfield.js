@@ -5,6 +5,7 @@ function SettingsField(opts) {
   this.id = opts.id;
   this.default = opts.default;
   this.title = opts.title || '';
+  this.size = opts.size || 2;
   this.section = opts.section || ['General'];
   this.tooltipPlacement = opts.tooltipPlacement || 'bottom';
   this.destination = opts.destination || 'chat';
@@ -36,17 +37,27 @@ SettingsField.prototype.getFromStorage = function () {
   case 'checkbox':
     val = (val === 'true');
     break;
+  case 'int':
+    val = Number(val);
+    break;
   }
 
   _this.val = val;
 };
 
-SettingsField.prototype.updateDisplay = function () {
+SettingsField.prototype.updateDisplay = function (fromGUI) {
   'use strict';
   var _this = this;
+  if (fromGUI) {
+    return;
+  }
   switch (_this.type) {
   case 'checkbox':
     _this.$input.prop('checked', _this.get());
+    break;
+  case 'int':
+  case 'text':
+    _this.$input.val(_this.get());
     break;
   }
 };
@@ -69,13 +80,13 @@ SettingsField.prototype.setStorage = function (val) {
   window.localStorage.setItem(_this.id, val);
 };
 
-SettingsField.prototype.set = function (val) {
+SettingsField.prototype.set = function (val, fromGUI) {
   'use strict';
   var _this = this;
   _this.oldVal = _this.val;
   _this.setStorage(val);
   _this.getFromStorage();
-  _this.updateDisplay();
+  _this.updateDisplay(fromGUI);
   if (_this.oldVal !== _this.val) {
     _this.onChange();
   }
@@ -102,10 +113,26 @@ SettingsField.prototype.createInput = function () {
   switch (_this.type) {
   case 'checkbox':
     return _this.createCheckboxInput();
-  //TODO remove when all types are implemented
+  case 'text':
+  case 'int':
+    return _this.createStringInput();
+    //TODO remove when all types are implemented
   default:
+    logger().warn(_this.name, 'settingtype not implemented yet ' + _this.type);
     _this.hidden = true;
   }
+};
+
+SettingsField.prototype.createStringInput = function () {
+  'use strict';
+  var _this = this;
+  _this.$div.addClass('instasync_settings_text');
+  return $('<input>', {
+    id: 'instasyncp-settings-text-' + _this.id,
+    type: 'text'
+  }).val(_this.get()).attr('size', _this.size).bind('input', function () {
+    _this.set($(this).val(), true);
+  });
 };
 
 SettingsField.prototype.createCheckboxInput = function () {
@@ -116,7 +143,7 @@ SettingsField.prototype.createCheckboxInput = function () {
     id: 'instasyncp-settings-checkbox-' + _this.id,
     type: 'checkbox'
   }).prop('checked', _this.get()).change(function () {
-    _this.set($(this).is(':checked'));
+    _this.set($(this).is(':checked'), true);
   });
 };
 
