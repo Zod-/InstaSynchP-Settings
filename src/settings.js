@@ -18,6 +18,33 @@ function Settings() {
     options: ['10m', '20m', '30m', '1h', 'on refresh'],
     'default': '30m',
     section: ['Plugins']
+  }, {
+    label: 'Autosync',
+    id: 'instasync-autosync',
+    type: 'checkbox',
+    destination: 'playlist',
+    'default': true,
+    section: ['InstaSync']
+  }, {
+    label: 'Native YouTube controls',
+    id: 'instasync-yt-controls',
+    type: 'checkbox',
+    destination: 'playlist',
+    'default': false,
+    section: ['InstaSync']
+  }, {
+    label: 'Show greynames in chat',
+    id: 'instasync-greynames-chat',
+    type: 'checkbox',
+    'default': true,
+    section: ['InstaSync']
+  }, {
+    label: 'Disable player',
+    id: 'instasync-disable-player',
+    type: 'checkbox',
+    destination: 'playlist',
+    'default': false,
+    section: ['InstaSync']
   }];
   var temp = {
     InstaSync: {
@@ -50,6 +77,29 @@ Settings.prototype.removeInstaSyncSettings = function () {
   $('#toggle_show_joined').parent().parent().remove();
   $('#toggleYTcontrols_box').parent().parent().remove();
   $('#toggle_autosync_box').parent().parent().remove();
+};
+
+Settings.prototype.postConnect = function () {
+  'use strict';
+  var _this = this;
+  window.room.autosync = _this.get('instasync-autosync');
+  window.room.showYTcontrols = _this.get('instasync-yt-controls');
+  window.room.filterGreyname = _this.get('instasync-greynames-chat');
+  window.room.playerDisabled = _this.get('instasync-disable-player');
+  reloadPlayer();
+};
+
+Settings.prototype.preConnect = function () {
+  'use strict';
+  var _this = this;
+  $('#disable_player').remove();
+  $('#reload_btn').off().on('click', function () {
+    if (!_this.get('instasync-disable-player')) {
+      reloadPlayer();
+    } else {
+      _this.set('instasync-disable-player', false);
+    }
+  });
 };
 
 Settings.prototype.createResetButtons = function () {
@@ -267,6 +317,32 @@ Settings.prototype.collectSettings = function () {
           plugins.cssLoader.addStyle(style);
         });
       });
+    }
+  });
+};
+
+Settings.prototype.persistentSettings = function () {
+  'use strict';
+  var _this = this;
+  events.on(_this, 'SettingChange[instasync-autosync]', function (ig, v) {
+    window.room.autosync = v;
+    if (v) {
+      sendcmd('resynch');
+    }
+  });
+  events.on(_this, 'SettingChange[instasync-yt-controls]', function (ig, v) {
+    window.room.showYTcontrols = v;
+    reloadPlayer();
+  });
+  events.on(_this, 'SettingChange[instasync-greynames-chat]', function (ig, v) {
+    window.room.filterGreyname = v;
+  });
+  events.on(_this, 'SettingChange[instasync-disable-player]', function (ig, v) {
+    window.room.playerDisabled = v;
+    if (v) {
+      $('#media').html('');
+    } else {
+      reloadPlayer();
     }
   });
 };
