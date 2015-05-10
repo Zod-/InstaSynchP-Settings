@@ -102,6 +102,7 @@ SettingsField.prototype.createInput = function () {
   switch (_this.type) {
   case 'checkbox':
     return _this.createCheckboxInput();
+  //TODO remove when all types are implemented
   default:
     _this.hidden = true;
   }
