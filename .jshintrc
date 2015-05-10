@@ -4,7 +4,9 @@
     "logger":        true,
     "events":        true,
     "plugins":       true,
-    "SettingsField": true
+    "SettingsField": true,
+    "createNavTab":  true,
+    "getTime":       true
   },
   "qunit":       true,
   "jquery":      true,

@@ -1,4 +1,5 @@
-#tabs_chat_settings_content .btn {
+#tabs_chat_settings_content .btn,
+#tabs_plugin_list_content .btn {
   margin-right: 4px;
 }
 
@@ -6,8 +7,12 @@
   margin-left: -4px;
 }
 
-#tabs_chat_settings_content {
+#tabs_chat_settings_content,
+#tabs_plugin_list_content {
   overflow-y: auto;
+}
+#tabs_plugin_list_content{
+  padding: 10px;
 }
 
 .instasync_settings_section {
@@ -44,4 +49,16 @@
   border: 1px solid #bbb;
   padding: 0 2px;
   margin-right: 4px;
+}
+
+.install_link {
+  color: #45FF00;
+}
+
+.current_version_link {
+  color: green;
+}
+
+.outdated_version_link {
+  color: #E02525;
 }

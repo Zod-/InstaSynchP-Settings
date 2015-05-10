@@ -2,17 +2,19 @@ function SettingsField(opts) {
   'use strict';
   this.type = opts.type;
   this.label = opts.label || '';
-  this.id = opts.id;
+  this.id = opts.id.replace(/ /g, '-');
   this.default = opts.default;
   this.title = opts.title || '';
   this.size = opts.size || 2;
   this.options = opts.options;
   this.section = opts.section || ['General'];
+  this.disabled = opts.disabled || false;
   this.tooltipPlacement = opts.tooltipPlacement || 'bottom';
   this.destination = opts.destination || 'chat';
   this.hidden = opts.hidden || false;
   this.$div = $('<div>');
   this.$input = undefined;
+  this.$tooltip = undefined;
   this.oldVal = undefined;
   this.val = undefined;
   this.init();
@@ -131,12 +133,12 @@ SettingsField.prototype.createSelectInput = function () {
   'use strict';
   var _this = this;
   _this.$div.addClass('instasync_settings_select');
-  var $input =  $('<select>', {
+  var $input = $('<select>', {
     id: 'instasyncp-settings-text-' + _this.id
   }).on('change', function () {
     _this.set($(this).val(), true);
   });
-  _this.options.forEach(function(option){
+  _this.options.forEach(function (option) {
     $input.append(
       $('<option>').text(option)
     );
@@ -169,13 +171,30 @@ SettingsField.prototype.createCheckboxInput = function () {
   });
 };
 
+SettingsField.prototype.setLabel = function (label) {
+  'use strict';
+  var _this = this;
+  _this.label = label;
+  _this.$input.detach();
+  _this.$tooltip.empty().append(_this.$input).append(_this.label);
+};
+
+SettingsField.prototype.setTitle = function (title) {
+  'use strict';
+  var _this = this;
+  _this.title = title;
+  _this.$tooltip.attr('data-original-title', _this.title);
+};
+
 SettingsField.prototype.buildDiv = function () {
   'use strict';
   var _this = this;
-  var $tooltip = _this.createTooltip();
+  _this.$tooltip = _this.createTooltip();
   _this.$input = _this.createInput();
-
-  _this.$div.append($tooltip.append(_this.$input).append(_this.label));
+  if (_this.$input) {
+    _this.$input.attr('disabled', _this.disabled);
+  }
+  _this.$div.append(_this.$tooltip.append(_this.$input).append(_this.label));
   if (_this.hidden) {
     _this.$div.hide();
   }
