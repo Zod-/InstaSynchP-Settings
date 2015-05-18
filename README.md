@@ -5,21 +5,50 @@ Provides the ability to store settings for the plugins
 
 Framework
 ------
-Fields need to be set up according to [GM_config](https://github.com/sizzlemctwizzle/GM_config/wiki) by adding them to `this.settings` as an array so they can be read when the core loads.
+Fields will be collected from `plugin.settings` which is an array containing all the defined settings for the plugin.
 
 e.g.
 
 ```javascript
 this.settings = [{
-    'label': 'Make chat visible on message',
-    'id': 'make-chat-visible',
-    'type': 'checkbox',
-    'default': true,
-    'section': ['General', 'Fullscreen']
+    label: 'Make chat visible on message',
+    id: 'make-chat-visible',
+    type: 'checkbox',
+    'default: true,
+    section: ['Fullscreen']
 }];
 ```
 
-Settings are stored in the `gmc` object
+Field types and options
+------
+
+The current supported types of fields are
+* checkbox (boolean)
+* text (string input field)
+* int (integer input field)
+* select (dropdown menu)
+
+The possible parameters are:
+```javascript
+this.settings = [{
+    label: 'label', //Label shown on the setting in the GUI
+    id: 'id', //Id to retrieve and save settings
+    type: 'select', //Type of the setting
+    options: ['value1', 'value2'], //Options for the select type
+    'default': 'value1', //Default value of the setting
+    title: 'title', //Tooltip of the setting
+    tooltipPlacement: 'top', //Placement of the tooltip (top(default), bottom, left, right)
+    section: ['General'], //Section that the setting gets moved into in the GUI
+    disabled: false, //Wether or not the input should be disabled
+    size: 2, //Size of the input fields (size attribute)
+    destination: 'chat', //Into which tab the setting should be moved into (chat(default), playlist, plugin)
+    hidden: false //Wether or not the setting should be hidden
+}];
+```
+
+
+
+The settings can be accessed through the `gmc` object and are stored in the [localStorage](http://www.w3schools.com/html/html5_webstorage.asp)
 
 #### `gmc.get`
 Get the stored value
@@ -33,21 +62,12 @@ Set the stored value from code.
 ```javascript
 gmc.set('make-chat-visible', false)
 ```
-<b>Note: Setting the value does not save it. Use `window.plugins.settings.save()` to save it.</b>
 
 Events
 ------
 ```javascript
-'SettingsOpen': []
-'SettingsSave': []
-'SettingsReset': []
-'SettingsClose': []
 'SettingChange[FieldId]': [oldValue, newValue]
 ```
-
-Public Variables
----------
-* `settings.fields` Array containing all the settings, is only used to initialize GM_config
 
 License
 -----------
