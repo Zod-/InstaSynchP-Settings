@@ -1,4 +1,4 @@
-InstaSynchP-Settings
+InstaSynchP-Settings [![Build Status](https://travis-ci.org/Zod-/InstaSynchP-Settings.svg?branch=master)](https://travis-ci.org/Zod-/InstaSynchP-Settings)
 ====================
 
 Provides the ability to store settings for the plugins
